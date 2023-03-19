@@ -6,18 +6,12 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgres"
     // NOTE: When using postgresql, mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
     // https://www.prisma.io/docs/reference/api-reference/prisma-schema-reference#string
     url      = env("DATABASE_URL")
-}
-
-model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
 }
 
 // Necessary for Next auth
@@ -49,12 +43,16 @@ model Session {
 
 model User {
     id            String    @id @default(cuid())
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
     name          String?
+    password      String?
     email         String?   @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
+    workouts      Workout[]
 }
 
 model VerificationToken {
@@ -63,4 +61,48 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Workout {
+    id          String     @id @default(cuid())
+    date        DateTime
+    duration    Int
+    description Int
+    userId      String
+    user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    setGroups   SetGroup[]
+}
+
+model SetGroup {
+    id        String    @id @default(cuid())
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    workoutId String
+    workout   Workout   @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+    setInfos  SetInfo[]
+}
+
+model SetInfo {
+    id           String   @id @default(cuid())
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    quantityType String
+    quantity     Int
+    weight       Int
+    setGroupId   String
+    setGroup     SetGroup @relation(fields: [setGroupId], references: [id], onDelete: Cascade)
+    exerciseName String
+    exercise     Exercise @relation(fields: [exerciseName], references: [exerciseName])
+}
+
+model Exercise {
+    exerciseName String    @id
+    muscleName   String
+    targetMuscle Muscle    @relation(fields: [muscleName], references: [muscleName])
+    setInfos     SetInfo[]
+}
+
+model Muscle {
+    muscleName String     @id
+    exercises  Exercise[]
 }
