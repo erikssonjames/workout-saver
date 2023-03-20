@@ -9,6 +9,9 @@ const config = {
       fontFamily: {
         primary: ["var(--jakarta-font)", ...fontFamily.sans],
       },
+      maxWidth: {
+        "2/5": "40%",
+      },
       colors: {
         "purple-8": "#10002b",
         "purple-7": "#240046",
@@ -18,6 +21,7 @@ const config = {
         "purple-3": "#9d4edd",
         "purple-2": "#c77dff",
         "purple-1": "#e0aaff",
+        "white-0-8": "rgba(white, 0.8)",
       },
     },
   },
