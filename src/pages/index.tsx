@@ -1,10 +1,8 @@
-import { NextApiRequest, NextApiResponse, type NextPage } from "next";
+import { type NextApiRequest, type NextApiResponse, type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
-
-import { api } from "@/utils/api";
-import { getServerSession } from "next-auth";
+import { getServerAuthSession } from "@/server/auth";
 
 const Home: NextPage = () => {
   return (
@@ -58,7 +56,7 @@ export async function getServerSideProps(context: {
   req: NextApiRequest,
   res: NextApiResponse
 }) {
-  const session = await getServerSession(...requestWrapper(context.req, context.res));
+  const session = await getServerAuthSession(context);
 
   if(!session) {
     return {
