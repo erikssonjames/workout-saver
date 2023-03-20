@@ -1,4 +1,5 @@
-import { fontFamily } from "tailwindcss/defaultTheme";
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { fontFamily } = require("tailwindcss/defaultTheme");
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -8,16 +9,16 @@ const config = {
       fontFamily: {
         primary: ["var(--jakarta-font)", ...fontFamily.sans],
       },
-    },
-    colors: {
-      "purple-8": "#10002b",
-      "purple-7": "#240046",
-      "purple-6": "#3c096c",
-      "purple-5": "#5a189a",
-      "purple-4": "#7b2cbf",
-      "purple-3": "#9d4edd",
-      "purple-2": "#c77dff",
-      "purple-1": "#e0aaff",
+      colors: {
+        "purple-8": "#10002b",
+        "purple-7": "#240046",
+        "purple-6": "#3c096c",
+        "purple-5": "#5a189a",
+        "purple-4": "#7b2cbf",
+        "purple-3": "#9d4edd",
+        "purple-2": "#c77dff",
+        "purple-1": "#e0aaff",
+      },
     },
   },
   plugins: [],
