@@ -8,7 +8,7 @@ export default function SignLayout({ children }: Props) {
   return (
     <div className='min-h-screen flex items-stretch justify-center relative overflow-hidden bg-gradient-to-br from-purple-7 via-purple-6 to-purple-5'>
       <div className='flex-1 max-w-2/5 relative flex items-center justify-center'>
-        <div className='relative z-10 flex justify-center flex-col overflow-hidden min-w-400'>
+        <div className='relative z-10 flex justify-center flex-col overflow-hidden min-w-[400px]'>
           {children}
         </div>
         <div className='absolute -top-1/2 -bottom-1/2 -left-1/2 right-0 bg-purple-8 rotate-12 border-purple-3 border-r-4' />
