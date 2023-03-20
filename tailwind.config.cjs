@@ -1,8 +1,14 @@
+import { fontFamily } from "tailwindcss/defaultTheme";
+
 /** @type {import('tailwindcss').Config} */
 const config = {
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        primary: ["var(--jakarta-font)", ...fontFamily.sans],
+      },
+    },
     colors: {
       "purple-8": "#10002b",
       "purple-7": "#240046",
