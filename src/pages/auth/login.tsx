@@ -8,11 +8,17 @@ import { Formik, Form, Field } from 'formik';
 import { CustomFormikField } from "@/components/formComponents/customFormikField";
 import { RiGithubLine } from 'react-icons/ri';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
+import * as Yup from 'yup';
 
 interface FormValues {
   email: string;
   password: string;
 }
+
+const SignInSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().min(8, 'Must be atleast 8 characters long').required('Required')
+});
 
 export default function SignIn({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
   const submit = (values: FormValues) => {
@@ -34,6 +40,7 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
         <Formik
           initialValues={{ email: '', password: '' }}
           onSubmit={submit}
+          validationSchema={SignInSchema}
         >
           {() => (
             <Form className="flex flex-col">
@@ -55,9 +62,9 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
         </Formik>
       </div>
       <div className="my-7 flex items-center">
-        <div className="h-0.5 bg-purple-2 flex-1" /> {/* Line */}
+        <div className="h-0.5 bg-purple-2 flex-1" />
         <p className="mx-2" >or</p>
-        <div className="h-0.5 bg-purple-2 flex-1" /> {/* Line */}
+        <div className="h-0.5 bg-purple-2 flex-1" />
       </div>
       <div className="flex flex-col" >
         {"github" in providers && (
