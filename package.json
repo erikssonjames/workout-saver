@@ -29,6 +29,7 @@
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
     "superjson": "1.9.1",
+    "ts-node": "^10.9.1",
     "yup": "^1.0.2",
     "zod": "^3.20.6"
   },
@@ -52,5 +53,8 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.8.0"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
