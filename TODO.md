@@ -1,6 +1,6 @@
 # TODO LIST
 
-Tasks are sorted by priority.
+Tasks are sorted by priority. If you are working on a task mark it with your name.
 
 ### Front End
 
