@@ -34,7 +34,7 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
       <Head>
         <title>Login</title>
       </Head>
-      <div>
+      <div className="mx-3">
         <h1 className="text-4xl" >Welcome back!</h1>
         <p className="text-xs text-gray-400 font-semibold">Sign in to your account</p>
         <Formik
@@ -48,6 +48,7 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
                 placeholder="zyzz@mirin.com"
                 name="email"
                 type="email"
+                extraClasses="mt-2"
                 component={CustomFormikField}
               />
               <Field  
@@ -61,15 +62,15 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
           )}
         </Formik>
       </div>
-      <div className="my-7 flex items-center">
+      <div className="my-7 mx-3 flex items-center">
         <div className="h-0.5 bg-purple-2 flex-1" />
         <p className="mx-2" >or</p>
         <div className="h-0.5 bg-purple-2 flex-1" />
       </div>
-      <div className="flex flex-col" >
+      <div className="flex flex-col mx-3" >
         {"github" in providers && (
           <button
-            className="mb-4 flex items-center justify-center bg-gray-600 py-2 font-semibold"
+            className="mb-5 flex items-center justify-center bg-gray-600 py-2 font-semibold hover:shadow-[0_0_6px_2px_rgba(75,85,99,0.56)]"
             onClick={() => pressedProvider("github")}
           >
             Sign in with Github <RiGithubLine className="ml-2" />
@@ -77,7 +78,7 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
         )}
         {"google" in providers && (
           <button
-            className="mb-4 flex items-center justify-center bg-orange-400 py-2 font-semibold"
+            className="mb-5 flex items-center justify-center bg-orange-400 py-2 font-semibold hover:shadow-[0_0_6px_2px_rgba(251,146,60,0.56)]"
             onClick={() => pressedProvider("google")}
           >
             Sign in with Google <BsGoogle className="ml-2" />
@@ -85,14 +86,14 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
         )}
         {"facebook" in providers && (
           <button
-            className="mb-4 flex items-center justify-center bg-blue-600 py-2 font-semibold"
+            className="flex items-center justify-center bg-blue-600 py-2 font-semibold hover:shadow-[0_0_6px_2px_rgba(37,96,235,0.56)]"
             onClick={() => pressedProvider("facebook")}
           >
             Sign in with Facebook <BsFacebook className="ml-2" />
           </button>
         )}
       </div>
-      <div className="mt-3 flex justify-center">
+      <div className="mt-5 flex justify-center">
         <p className="text-gray-500">
           Don&apos;t have an account? <Link className="text-white underline" href="/auth/register">Sign Up Now</Link>
         </p>
