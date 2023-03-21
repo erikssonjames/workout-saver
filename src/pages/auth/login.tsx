@@ -35,8 +35,8 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
         <title>Login</title>
       </Head>
       <div className="mx-3">
-        <h1 className="text-4xl" >Welcome back!</h1>
-        <p className="text-xs text-gray-400 font-semibold">Sign in to your account</p>
+        <h1 className="text-4xl font-semibold" >Welcome back!</h1>
+        <p className="text-sm mb-2 text-gray-500 font-semibold">Sign in to your account</p>
         <Formik
           initialValues={{ email: '', password: '' }}
           onSubmit={submit}
@@ -48,16 +48,17 @@ export default function SignIn({ providers }: InferGetServerSidePropsType<typeof
                 placeholder="zyzz@mirin.com"
                 name="email"
                 type="email"
-                extraClasses="mt-2"
+                margin="mt-4"
                 component={CustomFormikField}
               />
               <Field  
                 placeholder="••••••••"
                 name="password"
                 type="password"
+                margin="mt-4"
                 component={CustomFormikField}
               />
-              <button className="mt-3 bg-purple-3 py-2" type="submit">Sign In</button>
+              <button className="mt-5 bg-purple-3 py-2 text-lg font-semibold hover:shadow-[0_0_6px_2px_rgba(157,78,221,0.56)]" type="submit">Sign In</button>
             </Form>
           )}
         </Formik>
