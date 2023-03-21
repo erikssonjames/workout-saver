@@ -110,7 +110,12 @@ export async function getServerSideProps(context: {
   const session = await getServerAuthSession(context);
 
   if(session) {
-    return { redirect: { destination: '/' } };
+    return { 
+      redirect: { 
+        destination: '/', 
+        permanent: false 
+      } 
+    };
   }
 
   const providers = await getProviders();

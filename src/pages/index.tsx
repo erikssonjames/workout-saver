@@ -68,7 +68,7 @@ export async function getServerSideProps(context: {
   }
 
   return {
-    porps: {
+    props: {
       session,
     }
   }
