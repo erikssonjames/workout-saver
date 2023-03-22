@@ -1,5 +1,7 @@
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from 'react-toastify';
 import { SessionProvider } from "next-auth/react";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { api } from "@/utils/api";
@@ -26,6 +28,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
         `}
       </style>
       <Component {...pageProps} />
+      <ToastContainer />
     </SessionProvider>
   );
 };

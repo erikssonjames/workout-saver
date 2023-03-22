@@ -21,8 +21,18 @@ const SignInSchema = Yup.object().shape({
 });
 
 export default function SignIn({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
-  const submit = (values: FormValues) => {
+  const submit = async (values: FormValues) => {
     console.log(values);
+
+    console.log("loading");
+
+    const result = await signIn('credentials', { email: values.email, password: values.password });
+    
+    if (result?.ok) {
+      console.log("Show login succesfully");
+    } else {
+      console.log("Show login failed");
+    }
   }
 
   const pressedProvider = async (id: string) => {
