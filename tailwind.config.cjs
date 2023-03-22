@@ -13,6 +13,7 @@ const config = {
         "2/5": "40%",
       },
       colors: {
+        "purple-9": "#090019",
         "purple-8": "#10002b",
         "purple-7": "#240046",
         "purple-6": "#3c096c",
