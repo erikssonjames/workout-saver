@@ -2,7 +2,7 @@
 
 Tasks are sorted by priority. If you are working on a task mark it with your name.
 
-### Front End
+## Front End
 
 - Register Page
 - New User Page
@@ -12,9 +12,8 @@ Tasks are sorted by priority. If you are working on a task mark it with your nam
 - Sidebar
 - View Workouts Page
 
-### Back End
+## Back End
 
 - Email Verification
 
-### Miscellaneous
-
+## Miscellaneous
