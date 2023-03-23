@@ -20,7 +20,7 @@ const SignInSchema = Yup.object().shape({
   password: Yup.string().min(8, 'Must be atleast 8 characters long').required('Required')
 });
 
-export default function SignIn({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) {
+const SignIn = ({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const submit = async (values: FormValues) => {
     console.log(values);
 
@@ -136,3 +136,5 @@ export async function getServerSideProps(context: {
     }
   }
 }
+
+export default SignIn;

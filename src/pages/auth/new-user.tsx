@@ -10,9 +10,9 @@ const gymTypes = [
   { id: 4, type: "Twice a week" },
   { id: 5, type: "Between four and six times a week." },
   { id: 6, type: "I practically live at the gym!" },
-]
+];
 
-function NewUser() {
+const NewUser = () => {
   const [name, setName] = useState("");
   const [selectedType, setSelectedType] = useState(gymTypes[0]);
 
