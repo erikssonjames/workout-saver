@@ -53,6 +53,32 @@ model User {
     accounts      Account[]
     sessions      Session[]
     workouts      Workout[]
+    userInfo      UserInfo?
+}
+
+model UserInfo {
+    id               String   @id @default(cuid())
+    user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId           String   @unique
+    name             String
+    age              Int
+    height           Int
+    heigthQuantifier String
+    weight           Int
+    weightQuantifier String
+    gymInfo          GymInfo?
+}
+
+model GymInfo {
+    id            String   @id @default(cuid())
+    userInfo      UserInfo @relation(fields: [userInfoId], references: [id], onDelete: Cascade)
+    userInfoId    String   @unique
+    gymFrequency  String
+    workoutType   String
+    gainMuscle    Boolean
+    loseFat       Boolean
+    gainStrength  Boolean
+    improveHealth Boolean
 }
 
 model VerificationToken {
