@@ -31,7 +31,7 @@ const Register = () => {
   const router = useRouter();
 
   const submit = async (values: FormValues) => {
-    const id = toast.info("Loading...", 
+    const id = toast.info("Creating account...", 
       {
         autoClose: false,
         hideProgressBar: true,

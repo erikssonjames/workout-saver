@@ -9,6 +9,8 @@ import { CustomFormikField } from "@/components/formComponents/customFormikField
 import { RiGithubLine } from 'react-icons/ri';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
 import * as Yup from 'yup';
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
 
 interface FormValues {
   email: string;
@@ -21,17 +23,33 @@ const SignInSchema = Yup.object().shape({
 });
 
 const SignIn = ({ providers }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+  const router = useRouter();
+
   const submit = async (values: FormValues) => {
-    console.log(values);
+    const toastId = toast.info("Login in...", {
+      autoClose: false,
+      hideProgressBar: true,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: false,
+      progress: undefined,
+      position: "bottom-left",
+    });
 
-    console.log("loading");
-
-    const result = await signIn('credentials', { email: values.email, password: values.password });
-    
-    if (result?.ok) {
-      console.log("Show login succesfully");
-    } else {
-      console.log("Show login failed");
+    try {
+      await signIn('credentials', { email: values.email, password: values.password });
+      toast.update(toastId, {
+        render: "Successfully signed in",
+        type: toast.TYPE.SUCCESS,
+        autoClose: 3000,
+      });
+    } catch(e) {
+      console.log(e);
+      toast.update(toastId, {
+        render: "Something went wrong",
+        type: toast.TYPE.ERROR,
+        autoClose: 3000,
+      });
     }
   }
 
