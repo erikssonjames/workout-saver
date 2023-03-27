@@ -91,18 +91,10 @@ export const userRouter = createTRPCRouter({
           });
         }
 
-        const gainMuscle = goals.includes("Gain muscle");
-        const loseFat = goals.includes("Lose fat");
-        const gainStrength = goals.includes("Gain strength");
-        const improveHealth = goals.includes("Improve health");
-
-        const userTest = await prisma.user.findUnique({
-          where: {
-            id: ctx.session.user.id,
-          },
-        });
-
-        console.log("User: ", userTest);
+        const gainMuscle = goals.includes("Gain Muscle");
+        const loseFat = goals.includes("Lose Fat");
+        const gainStrength = goals.includes("Gain Strength");
+        const improveHealth = goals.includes("Improve Health");
 
         const userInfo = await prisma.userInfo.findFirst({
           where: {
