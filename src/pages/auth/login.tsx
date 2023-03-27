@@ -57,6 +57,7 @@ const SignIn = ({ providers }: InferGetServerSidePropsType<typeof getServerSideP
               <Field
                 placeholder="zyzz@mirin.com"
                 name="email"
+                label="Email"
                 type="email"
                 margin="mt-4"
                 component={CustomFormikField}
@@ -64,11 +65,12 @@ const SignIn = ({ providers }: InferGetServerSidePropsType<typeof getServerSideP
               <Field  
                 placeholder="••••••••"
                 name="password"
+                label="Password"
                 type="password"
                 margin="mt-4"
                 component={CustomFormikField}
               />
-              <button className="mt-5 bg-purple-3 py-2 text-lg font-semibold hover:shadow-[0_0_6px_2px_rgba(157,78,221,0.56)]" type="submit">Sign In</button>
+              <button className="mt-8 bg-purple-3 py-2 text-lg font-semibold hover:shadow-[0_0_6px_2px_rgba(157,78,221,0.56)]" type="submit">Sign In</button>
             </Form>
           )}
         </Formik>
