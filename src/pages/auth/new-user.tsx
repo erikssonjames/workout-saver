@@ -1,55 +1,45 @@
 import Head from "next/head";
 import { Fragment, useState } from "react";
-import { Listbox, Transition, Menu } from "@headlessui/react";
+import { Listbox, Transition } from "@headlessui/react";
 import { FaChevronDown, FaChevronUp , FaCheck } from 'react-icons/fa';
 import { Formik, Form, Field, useField } from "formik";
 import * as Yup from "yup";
 import { 
   gymFrequencys, 
   gymTypes, 
-  type GymFrequencyObject, 
-  type GymTypeObject 
+  gymGoals,
 } from "@/constants/gymInfo";
+import { api } from "@/utils/api";
 
 interface FormValues {
   name: string;
   weight: number;
   age: number;
   height: number;
-  gymType: GymTypeObject | undefined;
-  gymFrequency: GymFrequencyObject | undefined;
+  gymType: string;
+  gymFrequency: string;
   goals: string[];
 }
-
-const gymTypeSchema: Yup.ObjectSchema<GymTypeObject> = Yup.object().shape({
-  id: Yup.number().required("Required"),
-  type: Yup.string().required("Required"),
-});
-
-const gymFrequencySchema: Yup.ObjectSchema<GymFrequencyObject> = Yup.object().shape({
-  id: Yup.number().required("Required"),
-  type: Yup.string().required("Required"),
-});
 
 const NewUserSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
   weight: Yup.number().min(10, "Too light!").max(636, "New world record, too heavy!"),
   age: Yup.number().min(0, "Too young!").max(150, "Too old!"),
   height: Yup.number().min(0, "Too short!").max(300, "Too tall!"),
-  gymType: gymTypeSchema,
-  gymFrequency: gymFrequencySchema,
+  gymType: Yup.string().required("Required"),
+  gymFrequency: Yup.string().required("Required"),
   goals: Yup.array().of(Yup.string()),
 });
 
 const InputListBoxComponent = (
-  { options, value = { id: 1, type: "123" }, defaultValue  = { id: 1, type: "123" }, name }: 
+  { options, value, defaultValue, name }: 
   { 
-    options: { id: number, type: string }[],
-    value: { id: number, type: string } | undefined, 
-    defaultValue: { id: number, type: string } | undefined, 
+    options: string[],
+    value: string, 
+    defaultValue: string, 
     name: string 
   }) => {
-  const [field, meta, helpers] = useField(name);
+  const helpers = useField(name)[2];
 
   return (
     <Listbox value={value} defaultValue={defaultValue} onChange={(value) => {
@@ -58,7 +48,7 @@ const InputListBoxComponent = (
       {({ open, value }) => (
         <div className="relative mt-2">
           <Listbox.Button className="text-black relative w-full cursor-pointer rounded-lg bg-white border-purple-1 border-2 py-2 pl-3 pr-10 text-left focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <span className="block truncate">{value.type}</span>
+            <span className="block truncate">{value}</span>
             <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
               {open ? (
                 <FaChevronUp className="h-5 w-5 text-purple-1" />
@@ -80,7 +70,7 @@ const InputListBoxComponent = (
             >
               {options.map((type) => (
                 <Listbox.Option
-                  key={type.id}
+                  key={type}
                   className={({ active }) =>
                     `${
                       active ? "text-white bg-purple-1" : "text-gray-900"
@@ -96,7 +86,7 @@ const InputListBoxComponent = (
                           selected ? "font-medium" : "font-normal"
                         } block truncate`}
                       >
-                        {type.type}
+                        {type}
                       </span>
                       {selected ? (
                         <span
@@ -215,13 +205,15 @@ const CheckboxComponent = ({
 };
 
 const NewUser = () => {
+  const newUser = api.user.newUser.useMutation();
+
   const initialValues: FormValues = {
     name: "",
     weight: 0,
     age: 0,
     height: 0,
-    gymType: gymTypes[0],
-    gymFrequency: gymFrequencys[0],
+    gymType: gymTypes[0] ?? "",
+    gymFrequency: gymFrequencys[0] ?? "",
     goals: [],
   };
 
@@ -232,6 +224,20 @@ const NewUser = () => {
   const [heightQuanity, HeightChoiceComponent] = ChoiceListBoxComponent({
     options: ["cm", "in"],
   });
+
+  const submit = (values: FormValues) => {
+    newUser.mutate({
+      name: values.name,
+      weight: values.weight,
+      age: values.age,
+      height: values.height,
+      workoutType: values.gymType,
+      gymFrequency: values.gymFrequency,
+      goals: values.goals,
+      heigthQuantifier: heightQuanity,
+      weightQuantifier: weightQuanity,
+    });
+  };
 
   return (
     <>
@@ -246,7 +252,7 @@ const NewUser = () => {
           </div>
           <Formik
             initialValues={initialValues}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={submit}
             validationSchema={NewUserSchema}
           >
             {({ values }) => (
@@ -307,20 +313,19 @@ const NewUser = () => {
                 </div>
                 <div className="mt-10 flex flex-col">
                   <h1 className="text-xl">How often do you visit the gym?</h1>
-                  <InputListBoxComponent options={gymFrequencys} name="gymFrequency" defaultValue={gymFrequencys[0]} value={values.gymFrequency} />
+                  <InputListBoxComponent options={gymFrequencys} name="gymFrequency" defaultValue={gymFrequencys[0] ?? "Error"} value={values.gymFrequency} />
                 </div>
                 <div className="mt-10 flex flex-col">
                   <h1 className="text-xl">What type of workouts do you perform?</h1>
-                  <InputListBoxComponent options={gymTypes} name="gymType" defaultValue={gymTypes[0]} value={values.gymType} />
+                  <InputListBoxComponent options={gymTypes} name="gymType" defaultValue={gymTypes[0] ?? "Error"} value={values.gymType} />
                 </div>
                 <div className="mt-10 flex flex-col">
                   <h1 className="text-xl">What are your overall goals?</h1>
-                  <CheckboxComponent label="Gain Muscle" name="goals" value="Gain Muscle" />
-                  <CheckboxComponent label="Lose Weight" name="goals" value="Lose Weight" />
-                  <CheckboxComponent label="Gain Strength" name="goals" value="Gain Strength" />
-                  <CheckboxComponent label="Improve Health" name="goals" value="Improve Health" />
+                  {gymGoals.map((goal) => (
+                    <CheckboxComponent key={goal} label={goal} name="goals" value={goal} />
+                  ))}
                 </div>
-                <button className="mt-10 bg-purple-2 text-white rounded-lg py-2 font-semibold" type="submit">Save</button>
+                <button className="mt-20 bg-purple-2 text-white rounded-lg py-2 font-semibold" type="submit">Save</button>
               </Form>
             )}
           </Formik>
