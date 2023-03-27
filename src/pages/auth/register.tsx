@@ -4,6 +4,10 @@ import Link from "next/link";
 import { Formik, Field, Form } from "formik";
 import * as Yup from "yup";
 import { CustomFormikField } from "@/components/formComponents/customFormikField";
+import { api } from "@/utils/api";
+import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import { signIn } from "next-auth/react";
 
 const RegisterSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -22,9 +26,42 @@ interface FormValues {
   confirmPassword: string;
 }
 
-const Error = () => {
-  const submit = (values: FormValues) => {
-    console.log(values);
+const Register = () => {
+  const signUp = api.user.signUp.useMutation();
+  const router = useRouter();
+
+  const submit = async (values: FormValues) => {
+    const id = toast.info("Loading...", 
+      {
+        autoClose: false,
+        hideProgressBar: true,
+        closeOnClick: false,
+        pauseOnHover: false,
+        draggable: false,
+        progress: undefined,
+        position: "bottom-left",
+      });
+
+    try {
+      await signUp.mutateAsync(values);
+      await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+      });
+      await router.push("/auth/new-user");
+      toast.update(id, {
+        render: "Successfully registered",
+        type: toast.TYPE.SUCCESS,
+        autoClose: 3000,
+      });
+    } catch(e) {
+      console.log(e);
+      toast.update(id, {
+        render: "Something went wrong",
+        type: toast.TYPE.ERROR,
+        autoClose: 3000,
+      });
+    }
   };
 
   return (
@@ -86,4 +123,4 @@ const Error = () => {
   )
 }
 
-export default Error;
+export default Register;
