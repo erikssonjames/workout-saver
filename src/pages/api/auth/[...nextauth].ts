@@ -36,9 +36,28 @@ export function requestWrapper(
   const opts: NextAuthOptions = {
     adapter: adapter,
     callbacks: {
-      session({ session, user }) {
+      async session({ session, user }) {
+        let newUser = false;
+
+        try {
+          const result = await prisma.user.findUnique({
+            where: {
+              id: user.id,
+            },
+            select: {
+              userInfo: true,
+            },
+          });
+
+          newUser = result?.userInfo == null;
+
+        } catch (e) {
+          console.log('error----', e);
+        }
+
         if (session.user) {
           session.user.id = user.id;
+          session.user.newUser = newUser;
         }
         return session;
       },
@@ -64,14 +83,10 @@ export function requestWrapper(
             cookies.set('next-auth.session-token', sessionToken, {
               expires: sessionExpiry,
             });
-
-            if (!user.name) {
-              return '/auth/new-user';
-            }
           }
         }
 
-        return true;
+        return env.NEXTAUTH_URL;
       }
     },
     jwt: {
@@ -130,8 +145,8 @@ export function requestWrapper(
               },
               select: {
                 id: true,
-                name: true,
                 password: true,
+                name: true,
                 image: true,
               },
             });
@@ -168,6 +183,9 @@ export function requestWrapper(
               image: user.image,
             }
           } catch (err) {
+            if(err instanceof TRPCError)
+              throw err;
+
             throw new TRPCError({
               code: 'INTERNAL_SERVER_ERROR',
               message: 'Something went wrong, please try again',
