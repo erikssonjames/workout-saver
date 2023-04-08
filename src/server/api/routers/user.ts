@@ -114,9 +114,9 @@ export const userRouter = createTRPCRouter({
             id: ctx.session.user.id,
           },
           data: {
+            name: name,
             userInfo: {
               create: {
-                name,
                 age,
                 weight,
                 weightQuantifier,
