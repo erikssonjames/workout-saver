@@ -77,7 +77,7 @@ const Register = () => {
           validationSchema={RegisterSchema}
           onSubmit={submit}
         >
-          {({ errors, touched }) => (
+          {() => (
             <Form className="flex flex-col mt-4">
               <Field
                 name="email"
@@ -108,7 +108,7 @@ const Register = () => {
 
               <button
                 type="submit"
-                className="mt-8 px-4 py-2 text-white bg-purple-3 hover:shadow-[0_0_6px_2px_rgba(157,78,221,0.56)] focus:outline-none focus:bg-purple-4"
+                className="mt-8 px-4 py-2 text-white bg-purple-3 text-lg font-semibold hover:shadow-[0_0_6px_2px_rgba(157,78,221,0.56)] focus:outline-none focus:bg-purple-4"
               >
                 Register
               </button>
@@ -117,7 +117,7 @@ const Register = () => {
         </Formik>
 
 
-        <p className="text-sm text-center mt-10 text-gray-500">Already have an account? <Link href="/auth/login" className="text-white underline">Login</Link></p>
+        <p className="text-center mt-10 text-gray-500">Already have an account? <Link href="/auth/login" className="text-white underline">Login</Link></p>
       </div>
     </SignLayout>
   )
