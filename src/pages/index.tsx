@@ -67,6 +67,15 @@ export async function getServerSideProps(context: {
     }
   }
 
+  if(session.user?.newUser) {
+    return {
+      redirect: {
+        destination: 'auth/new-user',
+        permanent: false,
+      }
+    }
+  }
+
   return {
     props: {
       session,
@@ -78,6 +87,8 @@ export default Home;
 
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
+
+  console.log(sessionData);
 
   return (
     <div className="flex flex-col items-center justify-center gap-4">
