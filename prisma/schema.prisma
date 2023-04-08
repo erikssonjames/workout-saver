@@ -60,7 +60,6 @@ model UserInfo {
     id               String   @id @default(cuid())
     user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId           String   @unique
-    name             String
     age              Int
     height           Int
     heigthQuantifier String
