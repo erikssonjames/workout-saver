@@ -10,7 +10,7 @@ import { RiGithubLine } from 'react-icons/ri';
 import { BsGoogle, BsFacebook } from 'react-icons/bs';
 import * as Yup from 'yup';
 import { toast } from "react-toastify";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 interface FormValues {
   email: string;
@@ -37,14 +37,26 @@ const SignIn = ({ providers }: InferGetServerSidePropsType<typeof getServerSideP
     });
 
     try {
-      await signIn('credentials', { email: values.email, password: values.password });
-      toast.update(toastId, {
-        render: "Successfully signed in",
-        type: toast.TYPE.SUCCESS,
-        autoClose: 3000,
-      });
+      const res = await signIn('credentials', { email: values.email, password: values.password, redirect: false });
+      console.log(res?.url);
+
+      if(res?.ok){
+        toast.update(toastId, {
+          render: "Successfully signed in",
+          type: toast.TYPE.SUCCESS,
+          closeOnClick: true,
+          autoClose: 3000,
+        });
+        router.push(res?.url || "/auth/login");
+      } else {
+        toast.update(toastId, {
+          render: res?.error || "Something went wrong",
+          type: toast.TYPE.ERROR,
+          autoClose: 3000,
+        });
+      }
     } catch(e) {
-      console.log(e);
+      console.error(e);
       toast.update(toastId, {
         render: "Something went wrong",
         type: toast.TYPE.ERROR,
@@ -124,7 +136,7 @@ const SignIn = ({ providers }: InferGetServerSidePropsType<typeof getServerSideP
           </button>
         )}
       </div>
-      <div className="mt-5 flex justify-center">
+      <div className="mt-10 flex justify-center">
         <p className="text-gray-500">
           Don&apos;t have an account? <Link className="text-white underline" href="/auth/register">Sign Up Now</Link>
         </p>
