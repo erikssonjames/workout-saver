@@ -10,6 +10,10 @@ import {
   gymGoals,
 } from "@/constants/gymInfo";
 import { api } from "@/utils/api";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import { getServerAuthSession } from "@/server/auth";
+import { NextApiRequest, NextApiResponse } from "next/types";
 
 interface FormValues {
   name: string;
@@ -206,6 +210,7 @@ const CheckboxComponent = ({
 
 const NewUser = () => {
   const newUser = api.user.newUser.useMutation();
+  const router = useRouter();
 
   const initialValues: FormValues = {
     name: "",
@@ -225,18 +230,52 @@ const NewUser = () => {
     options: ["cm", "in"],
   });
 
-  const submit = (values: FormValues) => {
-    newUser.mutate({
-      name: values.name,
-      weight: values.weight,
-      age: values.age,
-      height: values.height,
-      workoutType: values.gymType,
-      gymFrequency: values.gymFrequency,
-      goals: values.goals,
-      heigthQuantifier: heightQuanity,
-      weightQuantifier: weightQuanity,
+  const submit = async (values: FormValues) => {
+    const toastId = toast.loading("Creating User...", {
+      autoClose: false,
+      position: "bottom-left",
+      closeOnClick: false,
+      pauseOnHover: false,
+      hideProgressBar: true,
+      draggable: false,     
     });
+
+    try {
+      await newUser.mutateAsync({
+        name: values.name,
+        weight: values.weight,
+        age: values.age,
+        height: values.height,
+        workoutType: values.gymType,
+        gymFrequency: values.gymFrequency,
+        goals: values.goals,
+        heigthQuantifier: heightQuanity,
+        weightQuantifier: weightQuanity,
+      });
+
+      toast.update(toastId, {
+        render: "User Updated!",
+        type: 'success',
+        autoClose: 2000,
+        position: "bottom-left",
+        closeOnClick: true,
+        pauseOnHover: true,
+        isLoading: false,
+      });
+
+      await router.push("/");
+    } catch (e) {
+      console.error(e);
+
+      toast.update(toastId, {
+        render: "Error Updating User!",
+        type: toast.TYPE.ERROR,
+        autoClose: 2000,
+        position: "bottom-left",
+        closeOnClick: true,
+        isLoading: false,
+      });
+    }
   };
 
   return (
@@ -333,6 +372,26 @@ const NewUser = () => {
       </div>
     </>
   )
+}
+
+export async function getServerSideProps(context: {
+  req: NextApiRequest,
+  res: NextApiResponse
+}) {
+  const session = await getServerAuthSession(context);
+
+  if (!session?.user || !session.user.newUser) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
 }
 
 export default NewUser;
