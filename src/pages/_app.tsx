@@ -21,11 +21,9 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <SessionProvider session={session}>
       <style jsx global>
-        {`
-          :root {
+        {`:root {
             --jakarta-font: ${plus_jakarta_sans.style.fontFamily};
-          }
-        `}
+          }`}
       </style>
       <Component {...pageProps} />
       <ToastContainer />
