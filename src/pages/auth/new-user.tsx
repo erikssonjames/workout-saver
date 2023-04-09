@@ -209,8 +209,6 @@ const CheckboxComponent = ({
 };
 
 const NewUser = () => {
-  console.log("----------------NewUser----------------");
-
   const newUser = api.user.newUser.useMutation();
   const router = useRouter();
 
@@ -381,6 +379,8 @@ export async function getServerSideProps(context: {
   res: NextApiResponse
 }) {
   const session = await getServerAuthSession(context);
+
+  console.log("new-user, getServerSideProps, session: ", session);
 
   if (!session?.user || !session.user.newUser) {
     console.log("Redirecting to /")

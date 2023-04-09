@@ -58,6 +58,8 @@ export async function getServerSideProps(context: {
 }) {
   const session = await getServerAuthSession(context);
 
+  console.log("index, getServerSideProps, session = ", session);
+
   if(!session) {
     return {
       redirect: {
