@@ -14,6 +14,7 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { getServerAuthSession } from "@/server/auth";
 import { type NextApiRequest, type NextApiResponse } from "next/types";
+import { useSession } from 'next-auth/react'
 
 interface FormValues {
   name: string;
@@ -210,6 +211,7 @@ const CheckboxComponent = ({
 
 const NewUser = () => {
   const newUser = api.user.newUser.useMutation();
+  const { update: updateSession } = useSession();
   const router = useRouter();
 
   const initialValues: FormValues = {
@@ -262,10 +264,14 @@ const NewUser = () => {
         pauseOnHover: true,
         isLoading: false,
       });
+      
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-assignment
+      const res = await updateSession({ name: values.name })
+      console.log("res = ", res)
 
       await router.push("/");
     } catch (e) {
-      console.error(e);
+      console.error("new-user, error = ", e);
 
       toast.update(toastId, {
         render: "Error Updating User!",
