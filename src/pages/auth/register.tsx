@@ -47,13 +47,16 @@ const Register = () => {
       await signIn("credentials", {
         email: values.email,
         password: values.password,
+        redirect: false,
       });
-      await router.push("/auth/new-user");
+
       toast.update(id, {
         render: "Successfully registered",
         type: toast.TYPE.SUCCESS,
         autoClose: 3000,
       });
+
+      await router.push("/auth/new-user");
     } catch(e) {
       console.log(e);
       toast.update(id, {
