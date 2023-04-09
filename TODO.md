@@ -17,3 +17,7 @@ Tasks are sorted by priority. If you are working on a task mark it with your nam
 - Email Verification
 
 ## Miscellaneous
+
+### Bugfixes
+
+- Uncertain if the redirection in the src/index.tsx getServerSideProps is correct. Fixed a temporary solution.

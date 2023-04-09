@@ -68,11 +68,15 @@ export async function getServerSideProps(context: {
   }
 
   if(session.user?.newUser) {
+    // Temp fix for redirecting to new-user page -- Might be bug
+    const destination = (context.req.headers.referer != null ? "" : "auth/") + "new-user";
+
     return {
       redirect: {
-        destination: 'auth/new-user',
+        destination: destination,
         permanent: false,
-      }
+      },
+      props: {},
     }
   }
 
