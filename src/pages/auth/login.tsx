@@ -38,7 +38,6 @@ const SignIn = ({ providers }: InferGetServerSidePropsType<typeof getServerSideP
 
     try {
       const res = await signIn('credentials', { email: values.email, password: values.password, redirect: false });
-      console.log(res?.url);
 
       if(res?.ok){
         toast.update(toastId, {
@@ -47,7 +46,7 @@ const SignIn = ({ providers }: InferGetServerSidePropsType<typeof getServerSideP
           closeOnClick: true,
           autoClose: 3000,
         });
-        router.push(res?.url || "/auth/login");
+        router.push("/");
       } else {
         toast.update(toastId, {
           render: res?.error || "Something went wrong",

@@ -13,7 +13,7 @@ import { api } from "@/utils/api";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import { getServerAuthSession } from "@/server/auth";
-import { NextApiRequest, NextApiResponse } from "next/types";
+import { type NextApiRequest, type NextApiResponse } from "next/types";
 
 interface FormValues {
   name: string;
@@ -209,6 +209,8 @@ const CheckboxComponent = ({
 };
 
 const NewUser = () => {
+  console.log("----------------NewUser----------------");
+
   const newUser = api.user.newUser.useMutation();
   const router = useRouter();
 
@@ -381,6 +383,7 @@ export async function getServerSideProps(context: {
   const session = await getServerAuthSession(context);
 
   if (!session?.user || !session.user.newUser) {
+    console.log("Redirecting to /")
     return {
       redirect: {
         destination: "/",
