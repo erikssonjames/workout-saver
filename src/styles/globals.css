@@ -10,6 +10,44 @@
   }
 }
 
+@layer components {
+  .radial-background1 {
+    background-image: radial-gradient(
+        circle farthest-corner at -25% -50%,
+        #0d1117 36%,
+        rgba(13, 17, 23, 0) 48%
+      ),
+      radial-gradient(
+        circle farthest-corner at -25% 150%,
+        #0d1117 45%,
+        rgba(13, 17, 23, 0) 89%
+      ),
+      radial-gradient(
+        circle farthest-corner at -25% -100%,
+        rgba(13, 17, 23, 0) 55%,
+        rgba(13, 17, 23, 0.28) 65%,
+        rgba(13, 17, 23, 0) 68%
+      ),
+      radial-gradient(
+        circle farthest-corner at -33% -75%,
+        #4d2eff 48%,
+        rgba(131, 5, 49, 0) 56%
+      ),
+      radial-gradient(
+        circle farthest-side at 0% -50%,
+        rgba(13, 17, 23, 0) 64%,
+        rgba(1, 2, 36, 0.4) 69%,
+        rgba(13, 17, 23, 0) 81%
+      ),
+      radial-gradient(
+        circle farthest-corner at 0% -50%,
+        rgba(13, 17, 23, 0) 33%,
+        #4500bc 51%,
+        rgba(13, 17, 23, 0) 72%
+      );
+  }
+}
+
 body {
   font-family: var(--jakarta-font);
 
